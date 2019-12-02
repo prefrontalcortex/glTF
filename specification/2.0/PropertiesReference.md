@@ -1,36 +1,44 @@
 # Properties Reference
 
 ## Objects
-* [`accessor`](#reference-accessor)
-   * [`sparse`](#reference-sparse)
-      * [`indices`](#reference-indices)
-      * [`values`](#reference-values)
-* [`animation`](#reference-animation)
-   * [`animation sampler`](#reference-animation-sampler)
-   * [`channel`](#reference-channel)
-      * [`target`](#reference-target)
-* [`asset`](#reference-asset)
-* [`buffer`](#reference-buffer)
-* [`bufferView`](#reference-bufferview)
-* [`camera`](#reference-camera)
-   * [`orthographic`](#reference-orthographic)
-   * [`perspective`](#reference-perspective)
-* [`extension`](#reference-extension)
-* [`extras`](#reference-extras)
-* [`glTF`](#reference-gltf) (root object)
-* [`image`](#reference-image)
-* [`material`](#reference-material)
-   * [`normalTextureInfo`](#reference-normaltextureinfo)
-   * [`occlusionTextureInfo`](#reference-occlusiontextureinfo)
-   * [`pbrMetallicRoughness`](#reference-pbrmetallicroughness)
-* [`mesh`](#reference-mesh)
-   * [`primitive`](#reference-primitive)
-* [`node`](#reference-node)
-* [`sampler`](#reference-sampler)
-* [`scene`](#reference-scene)
-* [`skin`](#reference-skin)
-* [`texture`](#reference-texture)
-* [`textureInfo`](#reference-textureinfo)
+* [accessor](#accessor)
+   * [sparse](#sparse)
+      * [indices](#indices)
+      * [values](#values)
+* [animation](#animation)
+   * [animation sampler](#animation-sampler)
+   * [channel](#channel)
+      * [target](#target)
+* [asset](#asset)
+* [buffer](#buffer)
+* [bufferView](#bufferview)
+* [camera](#camera)
+   * [orthographic](#orthographic)
+   * [perspective](#perspective)
+* [extension](#extension)
+* [extras](#extras)
+* [glTF](#gltf) (root object)
+* [image](#image)
+* [material](#material)
+   * [pbrMetallicRoughness](#pbrmetallicroughness)
+* [mesh](#mesh)
+   * [primitive](#primitive)
+* [node](#node)
+* [sampler](#sampler)
+* [scene](#scene)
+* [skin](#skin)
+* [texture](#texture)
+* [textureInfo](#textureinfo)
+* [Appendix A: Tangent Space Recalculation](#appendix-a-tangent-space-recalculation)
+* [Appendix B: BRDF Implementation](#appendix-b-brdf-implementation)
+* [Appendix C: Spline Interpolation](#appendix-c-spline-interpolation)
+
+## Extensions
+
+* [imageBasedLight](#imageBasedLight)
+* [ktx2](#ktx2)
+* [light](#light)
+* [pbrSpecularGlossiness](#pbrSpecularGlossiness)
 
 
 
@@ -116,7 +124,7 @@ Additional properties are allowed.
 <a name="reference-asset"></a>
 # Asset
 
-Metadata about the glTF asset.
+Metadata about the glTF asset. Not implemented in codebase.
 
 **Properties**
 
@@ -147,7 +155,7 @@ A buffer points to binary geometry, animation, or skins.
 
 |   |Type|Description|Required|
 |---|----|-----------|--------|
-|**uri**|`string`|The uri of the buffer.|No|
+|**uri**|`string`|The uri of the buffer.|No, default `""`|
 |**byteLength**|`integer`|The total byte length of the buffer view.| :white_check_mark: Yes|
 |**name**|`string`|The user-defined name of this object.|No|
 |**extensions**|`object`|Dictionary object with extension-specific objects.|No|
@@ -214,7 +222,7 @@ Additional properties are allowed.
 <a name="reference-channel"></a>
 # Channel
 
-Targets an animation's sampler at a node's property.
+Targets an animation's sampler at a node's property. Not implemented in codebase.
 
 **Properties**
 
@@ -309,8 +317,8 @@ Image data used to create a texture. Image can be referenced by URI or [`bufferV
 
 |   |Type|Description|Required|
 |---|----|-----------|--------|
-|**uri**|`string`|The uri of the image.|No|
-|**mimeType**|`string`|The image's MIME type.|No|
+|**uri**|`string`|The uri of the image.|No, default `""`|
+|**mimeType**|`string`|The image's MIME type.|No, default `""`|
 |**bufferView**|`integer`|The index of the bufferView that contains the image. Use this instead of the image's uri property.|No|
 |**name**|`string`|The user-defined name of this object.|No|
 |**extensions**|`object`|Dictionary object with extension-specific objects.|No|
@@ -367,6 +375,42 @@ The material appearance of a primitive.
 |**alphaMode**|`string`|The alpha rendering mode of the material.|No, default: `"OPAQUE"`|
 |**alphaCutoff**|`number`|The alpha cutoff value of the material.|No, default: `0.5`|
 |**doubleSided**|`boolean`|Specifies whether the material is double sided.|No, default: `false`|
+
+Additional properties are allowed.
+
+## pbrMetallicRoughness
+
+
+**Properties**
+
+|   |Type|Description|Required|
+|---|----|-----------|--------|
+|**baseColorFactor**|`number` `[4]`|The material's base color factor.|No, default: `[1,1,1,1]`|
+|**baseColorTexture**|`object`|The base color texture.|No|
+|**metallicFactor**|`number`|The metalness of the material.|No, default: `1`|
+|**roughnessFactor**|`number`|The roughness of the material.|No, default: `1`|
+|**metallicRoughnessTexture**|`object`|The metallic-roughness texture.|No|
+|**extensions**|`object`|Dictionary object with extension-specific objects.|No|
+|**extras**|`any`|Application-specific data.|No|
+
+Additional properties are allowed.
+
+
+<br><br>
+## pbrMetallicRoughness
+
+
+**Properties**
+
+|   |Type|Description|Required|
+|---|----|-----------|--------|
+|**clearcoatFactor**|`number`|The clearcoat color factor.|No|
+|**clearcoatTexture**|`object`|The base color texture.|No|
+|**clearcoatRoughnessFactor**|`number`|The roughness of the material.|No|
+|**clearcoatRoughnessTexture**|`object`|The clearcoat-roughness texture.|No|
+|**clearcoatNormalTexture**|`object`|The clearcoat-normal texture.|No|
+|**extensions**|`object`|Dictionary object with extension-specific objects.|No|
+|**extras**|`any`|Application-specific data.|No|
 
 Additional properties are allowed.
 
@@ -491,31 +535,6 @@ An orthographic camera containing properties to create an orthographic projectio
 |**extras**|`any`|Application-specific data.|No|
 
 Additional properties are allowed.
-
-
-
-
----------------------------------------
----------------------------------------
-<a name="reference-pbrmetallicroughness"></a>
-# pbrMetallicRoughness
-
-A set of parameter values that are used to define the metallic-roughness material model from Physically-Based Rendering (PBR) methodology.
-
-**Properties**
-
-|   |Type|Description|Required|
-|---|----|-----------|--------|
-|**baseColorFactor**|`number` `[4]`|The material's base color factor.|No, default: `[1,1,1,1]`|
-|**baseColorTexture**|`object`|The base color texture.|No|
-|**metallicFactor**|`number`|The metalness of the material.|No, default: `1`|
-|**roughnessFactor**|`number`|The roughness of the material.|No, default: `1`|
-|**metallicRoughnessTexture**|`object`|The metallic-roughness texture.|No|
-|**extensions**|`object`|Dictionary object with extension-specific objects.|No|
-|**extras**|`any`|Application-specific data.|No|
-
-Additional properties are allowed.
-
 
 
 
@@ -742,3 +761,203 @@ Array of size `accessor.sparse.count` times number of components storing the dis
 |**extras**|`any`|Application-specific data.|No|
 
 Additional properties are allowed.
+
+
+---------------------------------------
+---------------------------------------
+
+* [Appendix A: Tangent Space Recalculation](#appendix-a-tangent-space-recalculation)
+
+# Appendix A: Tangent Space Recalculation
+
+**TODO**
+
+# Appendix B: BRDF Implementation
+
+*This section is non-normative.*
+
+The glTF spec is designed to allow applications to choose different lighting implementations based on their requirements.
+
+An implementation sample is available at https://github.com/KhronosGroup/glTF-Sample-Viewer/ and provides an example of a WebGL implementation of a standard BRDF based on the glTF material parameters.
+
+As previously defined
+
+`const dielectricSpecular = rgb(0.04, 0.04, 0.04)`
+<br>
+`const black = rgb(0, 0, 0)`
+
+*c<sub>diff</sub>* = `lerp(baseColor.rgb * (1 - dielectricSpecular.r), black, metallic)`
+<br>
+*F<sub>0</sub>* = `lerp(dieletricSpecular, baseColor.rgb, metallic)`
+<br>
+*&alpha;* = `roughness ^ 2`
+
+Additionally,  
+*V* is the normalized vector from the shading location to the eye  
+*L* is the normalized vector from the shading location to the light  
+*N* is the surface normal in the same space as the above values  
+*H* is the half vector, where *H* = normalize(*L*+*V*)  
+
+The core lighting equation the sample uses is the Schlick BRDF model from [An Inexpensive BRDF Model for Physically-based Rendering](https://www.cs.virginia.edu/~jdl/bib/appearance/analytic%20models/schlick94b.pdf)
+
+![](figures/lightingSum.PNG)
+
+Below are common implementations for the various terms found in the lighting equation.
+
+### Surface Reflection Ratio (F)
+
+**Fresnel Schlick**
+
+Simplified implementation of Fresnel from [An Inexpensive BRDF Model for Physically based Rendering](https://www.cs.virginia.edu/~jdl/bib/appearance/analytic%20models/schlick94b.pdf) by Christophe Schlick.
+
+![](figures/lightingF.PNG)
+
+### Geometric Occlusion (G)
+
+**Smith Joint GGX**
+
+[Understanding the Masking-Shadowing Function in Microfacet-Based BRDFs](http://jcgt.org/published/0003/02/03/paper.pdf) by Eric Heitz.
+
+![](figures/lightingG.PNG)
+
+### Microfacet Distribution (D)
+
+**Trowbridge-Reitz**
+
+Implementation of microfacet distrubtion from [Average Irregularity Representation of a Roughened Surface for Ray Reflection](https://www.osapublishing.org/josa/abstract.cfm?uri=josa-65-5-531) by T. S. Trowbridge, and K. P. Reitz
+
+![](figures/lightingD.PNG)
+
+### Diffuse Term (diffuse)
+
+**Lambert**
+
+Implementation of diffuse from [Lambert's Photometria](https://archive.org/details/lambertsphotome00lambgoog) by Johann Heinrich Lambert
+
+![](figures/lightingDiff.PNG)
+
+# Appendix C: Spline Interpolation
+
+Animations in glTF support spline interpolation with a cubic spline.
+
+The keyframes of a cubic spline in glTF have input and output values where each input value corresponds to three output values of the same type: in-tangent, data point, and out-tangent.
+
+Given a set of keyframes
+
+&nbsp;&nbsp;&nbsp;&nbsp;Input *t*<sub>*k*</sub> with Output in-tangent ***a***<sub>k</sub>, point ***v***<sub>*k*</sub>, and out-tangent ***b***<sub>k</sub> for *k* = 1,...,*n*
+
+a spline segment between two keyframes is represented in a cubic Hermite spline form:
+
+&nbsp;&nbsp;&nbsp;&nbsp;***p***(*t*) = (2*t*<sup>3</sup> - 3*t*<sup>2</sup> + 1)***p***<sub>0</sub> + (*t<sup>3</sup>* - 2*t*<sup>2</sup> + *t*)***m***<sub>0</sub> + (-2*t*<sup>3</sup> + 3*t*<sup>2</sup>)***p***<sub>1</sub> + (*t*<sup>3</sup> - *t*<sup>2</sup>)***m***<sub>1</sub>
+
+where
+
+&nbsp;&nbsp;&nbsp;&nbsp;*t* is a value between 0 and 1  
+&nbsp;&nbsp;&nbsp;&nbsp;***p***<sub>0</sub> is the starting point at *t* = 0  
+&nbsp;&nbsp;&nbsp;&nbsp;***m***<sub>0</sub> is the scaled starting tangent at *t* = 0  
+&nbsp;&nbsp;&nbsp;&nbsp;***p***<sub>1</sub> is the ending point at *t* = 1  
+&nbsp;&nbsp;&nbsp;&nbsp;***m***<sub>1</sub> is the scaled ending tangent at *t* = 1  
+&nbsp;&nbsp;&nbsp;&nbsp;***p***(*t*) is the resulting point value  
+
+and where at input offset *t*<sub>*current*</sub> with keyframe index *k*
+
+&nbsp;&nbsp;&nbsp;&nbsp;*t* = (*t*<sub>*current*</sub> - *t*<sub>*k*</sub>) / (*t*<sub>*k*+1</sub> - *t*<sub>*k*</sub>)  
+&nbsp;&nbsp;&nbsp;&nbsp;***p***<sub>0</sub> = ***v***<sub>*k*</sub>  
+&nbsp;&nbsp;&nbsp;&nbsp;***m***<sub>0</sub> = (*t*<sub>*k*+1</sub> - *t*<sub>*k*</sub>)***b***<sub>k</sub>  
+&nbsp;&nbsp;&nbsp;&nbsp;***p***<sub>1</sub> = ***v***<sub>*k*+1</sub>  
+&nbsp;&nbsp;&nbsp;&nbsp;***m***<sub>1</sub> = (*t*<sub>*k*+1</sub> - *t*<sub>*k*</sub>)***a***<sub>k+1</sub>  
+
+The scalar-point multiplications are per point component.
+
+When the sampler targets a node's rotation property, the resulting ***p***(*t*) quaternion must be normalized before applying the result to the node's rotation.
+
+> **Implementation Note:** When writing out rotation output values, exporters should take care to not write out values which can result in an invalid quaternion with all zero values. This can be achieved by ensuring the output values never have both -***q*** and ***q*** in the same spline.
+
+> **Implementation Note:** The first in-tangent ***a***<sub>1</sub> and last out-tangent ***b***<sub>*n*</sub> should be zeros as they are not used in the spline calculations.
+
+
+
+
+
+
+---------------------------------------
+---------------------------------------
+
+
+# Extensions
+
+## Light
+
+All light types share the common set of properties listed below.
+
+### Light Shared
+
+| Property | Description | Required |
+|:-----------------------|:------------------------------------------| :--------------------------|
+| `name` | Name of the light. | No, Default: `""` |
+| `color` | RGB value for light's color in linear space. | No, Default: `[1.0, 1.0, 1.0]` |
+| `intensity` | Brightness of light in. The units that this is defined in depend on the type of light. `point` and `spot` lights use luminous intensity in candela (lm/sr) while `directional` lights use illuminance in lux (lm/m<sup>2</sup>) | No, Default: `1.0` |
+| `type` | Declares the type of the light. | :white_check_mark: Yes |
+| `range` | Hint defining a distance cutoff at which the light's intensity may be considered to have reached zero. Supported only for `point` and `spot` lights. Must be > 0. When undefined, range is assumed to be infinite. | No |
+
+
+### Spot
+
+When a light's `type` is `spot`, the `spot` property on the light is required. Its properties (below) are optional.
+
+| Property | Description | Required |
+|:-----------------------|:------------------------------------------| :--------------------------|
+| `innerConeAngle` | Angle, in radians, from centre of spotlight where falloff begins. Must be greater than or equal to `0` and less than `outerConeAngle`. | No, Default: `0` |
+| `outerConeAngle` | Angle, in radians, from centre of spotlight where falloff ends.  Must be greater than `innerConeAngle` and less than or equal to `PI / 2.0`. | No, Default: `PI / 4.0` |
+
+
+
+
+
+
+---------------------------------------
+---------------------------------------
+
+## Image-Based Light
+
+| Property | Description | Required |
+|:-----------------------|:------------------------------------------| :--------------------------|
+| `name` | Name of the light. | No |
+| `rotation` | Quaternion that represents the rotation of the IBL environment. | No, Default: `[0.0, 0.0, 0.0, 1.0]` |
+| `intensity` | Brightness multiplier for environment. | No, Default: `1.0` |
+| `irradianceCoefficients` | Declares spherical harmonic coefficients for irradiance up to l=2. This is a 9x3 array. | :white_check_mark: Yes |
+| `specularImages` | Declares an array of the first N mips of the prefiltered cubemap. Each mip is, in turn, defined with an array of 6 images, one for each cube face. i.e. this is an Nx6 array. | :white_check_mark: Yes |
+| `specularImageSize` | The dimension (in pixels) of the first specular mip. This is needed to determine, pre-load, the total number of mips needed. | :white_check_mark: Yes |
+
+
+
+
+---------------------------------------
+---------------------------------------
+
+
+## pbrSpecularGlossiness
+
+The following table lists the allowed types and ranges for the specular-glossiness model:
+
+|   |Type|Description|Required|
+|---|----|-----------|--------|
+|**diffuseFactor** | `number[4]` | The reflected diffuse factor of the material.|No, default:`[1.0,1.0,1.0,1.0]`|
+|**diffuseTexture** | [`textureInfo`](/specification/2.0/README.md#reference-textureInfo)  | The diffuse texture.|No|
+|**specularFactor** | `number[3]` | The specular RGB color of the material. |No, default:`[1.0,1.0,1.0]`|
+|**glossinessFactor** | `number` | The glossiness or smoothness of the material. |No, default:`1.0`|
+|**specularGlossinessTexture** | [`textureInfo`](/specification/2.0/README.md#reference-textureInfo) | The specular-glossiness texture.|No|
+
+
+<br>
+<br>
+<br>
+
+The following table describes the expected rendering behavior based on the material definitions included in the asset:
+
+| | Client supports metallic-roughness | Client supports metallic-roughness and specular-glossiness | 
+|----|:----:|:----:|
+|Asset has metallic-roughness | Render metallic-roughness | Render metallic-roughness |  
+|Asset has metallic-roughness and specular-glossiness | Render metallic-roughness | Render specular-glossiness | 
+|Asset has specular-glossiness with `extensionsRequired`| Fail to load | Render specular-glossiness | 
+|Asset has specular-glossiness with `extensionsUsed` | Render as if no material | Render specular-glossiness | 
