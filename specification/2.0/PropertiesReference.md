@@ -35,10 +35,22 @@
 
 ## Extensions
 
-* [imageBasedLight](#imageBasedLight)
 * [ktx2](#ktx2)
 * [light](#light)
-* [pbrSpecularGlossiness](#pbrSpecularGlossiness)
+   * [Light Shared](#Light-Shared)
+   * [spot](#spot)
+   * [image based Light](#image-Based-Light)
+* [materials](#materials)
+   * [clearcoat](#clearcoat)
+   * [pbrSpecularGlossiness](#pbrSpecularGlossiness)
+   * [specular](#specular)
+   * [unlit](#unlit)
+* [textures](#textures)
+   * [basisu](#Texture-basisu)
+   * [astc hdr](#Texture-astc-hdr)
+   * [bc6h](#Texture-bc6h)
+   * [transform](#Texture-Transform)
+
 
 
 
@@ -390,25 +402,6 @@ Additional properties are allowed.
 |**metallicFactor**|`number`|The metalness of the material.|No, default: `1`|
 |**roughnessFactor**|`number`|The roughness of the material.|No, default: `1`|
 |**metallicRoughnessTexture**|`object`|The metallic-roughness texture.|No|
-|**extensions**|`object`|Dictionary object with extension-specific objects.|No|
-|**extras**|`any`|Application-specific data.|No|
-
-Additional properties are allowed.
-
-
-<br><br>
-## pbrMetallicRoughness
-
-
-**Properties**
-
-|   |Type|Description|Required|
-|---|----|-----------|--------|
-|**clearcoatFactor**|`number`|The clearcoat color factor.|No|
-|**clearcoatTexture**|`object`|The base color texture.|No|
-|**clearcoatRoughnessFactor**|`number`|The roughness of the material.|No|
-|**clearcoatRoughnessTexture**|`object`|The clearcoat-roughness texture.|No|
-|**clearcoatNormalTexture**|`object`|The clearcoat-normal texture.|No|
 |**extensions**|`object`|Dictionary object with extension-specific objects.|No|
 |**extras**|`any`|Application-specific data.|No|
 
@@ -886,6 +879,33 @@ When the sampler targets a node's rotation property, the resulting ***p***(*t*) 
 
 # Extensions
 
+## KTX2
+
+Based on code implementation
+
+
+| Property | Type| Description | Required |
+|:-----------------------| :--------------------------|:------------------------------------------| :--------------------------|
+| `vkFormat` |`number`|   | Yes, Default: `0.0` |
+| `pixelWidth` |`number`|  | Yes, Default: `1.0` |
+| `pixelHeight` |`number`|  | Yes, Default: `0.0` |
+| `pixelDepth` |`number`|  | Yes, Default: `0.0` |
+| `layerCount` |`number`|  | Yes, Default: `0.0` |
+| `levels` |`HeapLinkedList<Ktx2Level>`|  | Yes |
+| `faceCount` |`number`|   | Yes, Default: `1.0` |
+| `supercompressionScheme` |`number`|  | Yes, Default: `0.0` |
+| `dfdByteOffset` |`number`|  | Yes, Default: `0.0` |
+| `dfdByteLength` |`number`|  | Yes, Default: `0.0` |
+| `sgdByteOffset` |`number`|  | Yes, Default: `0.0` |
+| `generateMipmaps` |`bool`|  | Yes, Default: `true` |
+| `metaData` |`KTXMetaData`|  | Yes |
+
+
+
+
+---------------------------------------
+---------------------------------------
+
 ## Light
 
 All light types share the common set of properties listed below.
@@ -911,14 +931,7 @@ When a light's `type` is `spot`, the `spot` property on the light is required. I
 | `outerConeAngle` | Angle, in radians, from centre of spotlight where falloff ends.  Must be greater than `innerConeAngle` and less than or equal to `PI / 2.0`. | No, Default: `PI / 4.0` |
 
 
-
-
-
-
----------------------------------------
----------------------------------------
-
-## Image-Based Light
+### Image-Based Light
 
 | Property | Description | Required |
 |:-----------------------|:------------------------------------------| :--------------------------|
@@ -929,14 +942,44 @@ When a light's `type` is `spot`, the `spot` property on the light is required. I
 | `specularImages` | Declares an array of the first N mips of the prefiltered cubemap. Each mip is, in turn, defined with an array of 6 images, one for each cube face. i.e. this is an Nx6 array. | :white_check_mark: Yes |
 | `specularImageSize` | The dimension (in pixels) of the first specular mip. This is needed to determine, pre-load, the total number of mips needed. | :white_check_mark: Yes |
 
+### Texture Restrictions
+
+- A glTF `texture` used for IBL cannot have a `KHR_texture_transform` extension defined.
+- `specularEnvironmentTexture` and `diffuseEnvironmentTexture` (when used) must refer to a texture referring to a KTX2 image of **Cubemap** type as defined in KTX2, Section 4.3. Namely:
+  - `pixelHeight` must be greater than 0.
+  - `pixelDepth` must be 0.
+  - `layerCount` must be 0.
+  - `faceCount` must be 6.
+- The image must contain mip levels.
+- The transfer function for all image formats must be linear.
+- Cubemaps orientation must be aligned with [glTF coordinate system](../../../../specification/2.0#coordinate-system-and-units). 
+
 
 
 
 ---------------------------------------
 ---------------------------------------
 
+## Materials
 
-## pbrSpecularGlossiness
+## clearcoat
+
+|   |Type|Description|Required|
+|---|----|-----------|--------|
+|**clearcoatFactor**|`number`|The clearcoat color factor.|No|
+|**clearcoatTexture**|`object`|The base color texture.|No|
+|**clearcoatRoughnessFactor**|`number`|The roughness of the material.|No|
+|**clearcoatRoughnessTexture**|`object`|The clearcoat-roughness texture.|No|
+|**clearcoatNormalTexture**|`object`|The clearcoat-normal texture.|No|
+|**extensions**|`object`|Dictionary object with extension-specific objects.|No|
+|**extras**|`any`|Application-specific data.|No|
+
+Additional properties are allowed.
+
+<br>
+<br>
+
+### pbrSpecularGlossiness
 
 The following table lists the allowed types and ranges for the specular-glossiness model:
 
@@ -951,7 +994,6 @@ The following table lists the allowed types and ranges for the specular-glossine
 
 <br>
 <br>
-<br>
 
 The following table describes the expected rendering behavior based on the material definitions included in the asset:
 
@@ -961,3 +1003,112 @@ The following table describes the expected rendering behavior based on the mater
 |Asset has metallic-roughness and specular-glossiness | Render metallic-roughness | Render specular-glossiness | 
 |Asset has specular-glossiness with `extensionsRequired`| Fail to load | Render specular-glossiness | 
 |Asset has specular-glossiness with `extensionsUsed` | Render as if no material | Render specular-glossiness | 
+
+<br>
+<br>
+
+
+### Specular
+
+The following table lists the allowed types and ranges for the specular-glossiness model:
+
+|   |Type|Description|Required|
+|---|----|-----------|--------|
+|**specularFactor** | `number` | The specular RGB color of the material. |No|
+|**specularGlossinessTexture** | [`textureInfo`](/specification/2.0/README.md#reference-textureInfo) | The specular texture.|No|
+
+<br>
+<br>
+
+### unlit
+
+The common Unlit material is defined by adding the
+`KHR_materials_unlit` extension to any glTF material. When present, the
+extension indicates that a material should be unlit and use available
+`baseColor` values, alpha values, and vertex colors while ignoring all
+properties of the default PBR model related to lighting or color. Alpha
+coverage and doubleSided still apply to unlit materials.
+
+```json
+{
+    "materials": [
+        {
+            "name": "MyUnlitMaterial",
+            "pbrMetallicRoughness": {
+                "baseColorFactor": [ 0.5, 0.8, 0.0, 1.0 ]
+            },
+            "extensions": {
+                "KHR_materials_unlit": {}
+            }
+        }
+    ]
+}
+```
+
+#### Definition
+
+The Unlit material model describes a constantly shaded surface that is
+independent of lighting. The material is defined only by properties already
+present in the [glTF 2.0 material specification](https://github.com/KhronosGroup/glTF/tree/master/specification/2.0#material).
+No new properties are added by this extension — it is effectively a boolean
+flag indicating use of an unlit shading model. Additional properties on the
+extension object are allowed, but may lead to undefined behaviour in conforming
+viewers.
+
+Color is calculated as:
+
+```
+color = <baseColorTerm>
+```
+
+`<baseColorTerm>` is the product of `baseColorFactor`, `baseColorTexture`, and vertex color (if any), as defined by the [core glTF material specification](https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/README.md#metallic-roughness-material).
+
+
+
+
+
+---------------------------------------
+---------------------------------------
+
+## Textures
+
+### Texture basisu
+
+|   |Type|Description|Required|
+|---|----|-----------|--------|
+|**source** | `integer` | index of the images node which defines a reference to the KTX2 image with Basis Universal supercompression |yes|
+
+<br>
+
+### Texture astc hdr
+
+|   |Type|Description|Required|
+|---|----|-----------|--------|
+|**source** | `integer` | index of the images node which defines a reference to the KTX2 image with ASTC HDR payload |yes|
+
+<br>
+
+
+### Texture bc6h
+
+|   |Type|Description|Required|
+|---|----|-----------|--------|
+|**source** | `integer` | index of the images node which defines a reference to the KTX2 image with BC6H payload |yes|
+
+<br>
+
+### Texture Transform
+The `KHR_texture_transform` extension may be defined on `textureInfo` structures. It may contain the following properties:
+
+| Name       | Type       | Default      | Description
+|------------|------------|--------------|---------------------------------
+| `offset`   | `array[2]` | `[0.0, 0.0]` | The offset of the UV coordinate origin as a factor of the texture dimensions.
+| `rotation` | `number`   | `0.0`        | Rotate the UVs by this many radians counter-clockwise around the origin. This is equivalent to a similar rotation of the image clockwise.
+| `scale`    | `array[2]` | `[1.0, 1.0]` | The scale factor applied to the components of the UV coordinates.
+| `texCoord` | `integer`  |              | Overrides the textureInfo texCoord value if supplied, and if this extension is supported.
+
+Though this extension's values are unbounded, they will only produce sane results if the texture sampler's `wrap` mode is `REPEAT`, or if the result of the final UV transformation is within the range [0, 1] (i.e. negative scale settings and correspondingly positive offsets).
+
+> **Implementation Note**: For maximum compatibility, it is recommended that exporters generate UV coordinate sets both with and without transforms applied, use the post-transform set in the texture `texCoord` field, then the pre-transform set with this extension. This way, if the extension is not supported by the consuming engine, the model still renders correctly. Including both will increase the size of the model, so if including the fallback UV set is too burdensome, either add this extension to `extensionsRequired` or use the same texCoord value in both places.
+
+> **Implementation Note**: From the glTF core specification, the origin of the UV coordinates (0, 0) corresponds to the upper left corner of a texture image.
