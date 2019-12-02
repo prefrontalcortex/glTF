@@ -91,7 +91,7 @@ Copyright (C) 2013-2017 The Khronos Group Inc. All Rights Reserved. glTF is a tr
     * [Chunks](#chunks)
       * [Structured JSON Content](#structured-json-content)
       * [Binary Buffer](#binary-buffer)
-* [Properties Reference](#properties-reference)
+* [Properties Reference](PropertiesReference.md)
 * [Acknowledgments](#acknowledgments)
 * [Appendix A: Tangent Space Recalculation](#appendix-a-tangent-space-recalculation)
 * [Appendix B: BRDF Implementation](#appendix-b-brdf-implementation)
