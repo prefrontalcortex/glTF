@@ -34,6 +34,13 @@
                 "description": "The index of the texture."
             }
         },
+        "specularLookupTexture": {
+            "description": "The lookup table texture for the specular environment",
+            "index": {
+                "allOf": [ { "$ref": "glTFid.schema.json" } ],
+                "description": "The index of the texture."
+            }
+        },
         "diffuseEnvironmentTexture": {
             "description": "The prefiltered diffuse environment map.",
             "index": {
@@ -63,13 +70,15 @@
         {
             "required": [
                 "specularEnvironmentTexture",
-                "diffuseSphericalHarmonics"
+                "specularLookupTexture",
+                "diffuseEnvironmentTexture"
             ]
         },
         {
             "required": [
                 "specularEnvironmentTexture",
-                "diffuseEnvironmentTexture"
+                "specularLookupTexture",
+                "diffuseSphericalHarmonics"
             ]
         }
     ]
