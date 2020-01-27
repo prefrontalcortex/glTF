@@ -1,4 +1,4 @@
-# KHR_lights_image_based
+# UX3D_lights_imageBased
 
 ## Contributors
 
@@ -20,7 +20,7 @@ Written against the glTF 2.0 spec, requires `KHR_texture_basisu` extension, inte
 
 This extension provides the ability to define image-based lights in a glTF scene. Image-based lights consist of an environment map that represents specular radiance for the scene as well as irradiance information.
 
-Many 3D tools and engines support image-based global illumination but the exact technique and data formats employed vary. Using this extension, tools can export and engines can import image-based lights and the result should be highly consistent. 
+Many 3D tools and engines support image-based global illumination but the exact technique and data formats employed vary. Using this extension, tools can export and engines can import image-based lights and the result should be highly consistent.
 
 This extension specifies exactly one way to format and reference the environment map to be used. The goals of this are two-fold. First, it makes implementing support for this extension easier. Secondly, it ensures that rendering of the image-based lighting is consistent across runtimes.
 
@@ -28,13 +28,13 @@ A conforming implementation of this extension must be able to load the image-bas
 
 ## Defining an Image-Based Light
 
-The `KHR_lights_image_based` extension defines a array of image-based lights at the root of the glTF and then each scene can reference one. Each image-based light definition consists of a single cubemap that describes the specular radiance of the scene, the l=2 spherical harmonics coefficients or another cubemap for diffuse irradiance, and also rotation, brighness factor, and offset values.
+The `UX3D_lights_imageBased` extension defines a array of image-based lights at the root of the glTF and then each scene can reference one. Each image-based light definition consists of a single cubemap that describes the specular radiance of the scene, the l=2 spherical harmonics coefficients or another cubemap for diffuse irradiance, and also rotation, brighness factor, and offset values.
 
 An example using SH for diffuse irradiance:
 
 ```json
 "extensions": {
-    "KHR_lights_image_based" : {
+    "UX3D_lights_imageBased" : {
         "imageBasedLights": [
             {
                 "rotation": [0, 0, 0, 1],
@@ -56,7 +56,7 @@ An example using a cubemap for diffuse irradiance:
 
 ```json
 "extensions": {
-    "KHR_lights_image_based" : {
+    "UX3D_lights_imageBased" : {
         "imageBasedLights": [
             {
                 "rotation": [0, 0, 0, 1],
@@ -82,17 +82,17 @@ This extension can use spherical harmonic coefficients to define irradiance used
 
 ## Adding Light Instances to Scenes
 
-Each scene can have a single IBL light attached to it by defining the `extensions` and `KHR_lights_image_based` property and, within that, an index into the `imageBasedLights` array using the `imageBasedLight` property.
+Each scene can have a single IBL light attached to it by defining the `extensions` and `UX3D_lights_imageBased` property and, within that, an index into the `imageBasedLights` array using the `imageBasedLight` property.
 
 ```json
 "scenes" : [
     {
         "extensions" : {
-            "KHR_lights_image_based" : {
+            "UX3D_lights_imageBased" : {
                 "imageBasedLight" : 0
             }
         }
-    }            
+    }
 ]
 ```
 
@@ -114,7 +114,7 @@ finalSampledColor = sampledColor * brightnessFactor + brightnessOffset;
   - `faceCount` must be 6.
 - The image must contain mip levels.
 - The transfer function for all image formats must be linear.
-- Cubemaps orientation must be aligned with [glTF coordinate system](../../../../specification/2.0#coordinate-system-and-units). 
+- Cubemaps orientation must be aligned with [glTF coordinate system](../../../../specification/2.0#coordinate-system-and-units).
 
 ### Normal Quality
 
@@ -136,10 +136,10 @@ Assets expected to be publicly released should always provide a normal quality f
         "version": "2.0"
     },
     "extensionsUsed": [
-        "KHR_lights_image_based", "KHR_texture_basisu", "KHR_image_ktx2", "EXT_texture_bc6h", "EXT_texture_astc_hdr"
+        "UX3D_lights_imageBased", "KHR_texture_basisu", "KHR_image_ktx2", "EXT_texture_bc6h", "EXT_texture_astc_hdr"
     ],
     "extensionsRequired": [
-        "KHR_lights_image_based", "KHR_texture_basisu", "KHR_image_ktx2"
+        "UX3D_lights_imageBased", "KHR_texture_basisu", "KHR_image_ktx2"
     ],
     "textures": [
         {
@@ -173,10 +173,10 @@ Assets expected to be publicly released should always provide a normal quality f
 
 ## glTF Schema Updates
 
-* **JSON schema**: 
-- [glTF.KHR_lights_image_based.schema.json](schema/glTF.KHR_lights_image_based.schema.json)
+* **JSON schema**:
+- [glTF.UX3D_lights_imageBased.schema.json](schema/glTF.UX3D_lights_imageBased.schema.json)
 - [imageBasedLight.schema.json](schema/imageBasedLight.schema.json)
-- [scene.KHR_lights_image_based.schema.json](schema/scene.KHR_lights_image_based.schema.json)
+- [scene.UX3D_lights_imageBased.schema.json](schema/scene.UX3D_lights_imageBased.schema.json)
 
 ## Known Implementations
 
