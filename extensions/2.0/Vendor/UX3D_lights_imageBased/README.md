@@ -6,6 +6,8 @@
 * Mike Bond, Adobe
 * Norbert Nopper, UX3D
 * Alexey Knyazev
+* Benjamin Schmithüsen, UX3D
+* Fabian Wahlster, UX3D
 * `Please add or remove!`
 
 ## Status
