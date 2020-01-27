@@ -123,45 +123,52 @@ finalSampledColor = sampledColor * brightnessFactor + brightnessOffset;
 
 Data must be stored as a KTX2 image.
 
-### Example with three encodings for the same texture
+## Example
 
 ```json
 {
-    "asset": {
-        "version": "2.0"
-    },
-    "extensionsUsed": [
-        "UX3D_lights_imageBased", "KHR_texture_basisu", "KHR_image_ktx2", "EXT_texture_bc6h", "EXT_texture_astc_hdr"
-    ],
-    "extensionsRequired": [
-        "UX3D_lights_imageBased", "KHR_texture_basisu", "KHR_image_ktx2"
-    ],
-    "textures": [
+    "asset": { "version": "2.0" },
+    "extensionsUsed": [ "UX3D_lights_imageBased" ],
+    "extensionsRequired": [ "UX3D_lights_imageBased" ],
+    "scenes": [
         {
-            "name": "Specular Environment Texture",
             "extensions": {
-                "KHR_texture_basisu": {
-                    "source": 0
-                },
-                "EXT_texture_bc6h": {
-                    "source": 1
-                },
-                "EXT_texture_astc_hdr": {
-                    "source": 2
+                "UX3D_lights_imageBased" : {
+                    "imageBasedLight": 0
                 }
             }
         }
     ],
-    "images": [
-        {
-            "uri": "image_basisu.ktx2"
-        },
-        {
-            "uri": "image_bc6h.ktx2"
-        },
-        {
-            "uri": "image_astc.ktx2"
+    "extensions": {
+        "UX3D_lights_imageBased" : {
+            "imageBasedLights": [
+                {
+                    "name": "GGX",
+                    "specularEnvironmentTexture": 0,
+                    "diffuseEnvironmentTexture": 1,
+                    "specularLookupTexture": 2
+                }
+            ]
         }
+    },
+    "textures": [
+        {
+            "name": "Specular Environment Texture",
+            "source": 0,
+        },
+        {
+            "name": "Diffuse Environment Texture",
+            "source": 1
+        },
+        {
+            "name": "Specular LUT Texture",
+            "source": 2
+        }
+    ],
+    "images": [
+        { "uri": "environmentSpecular.ktx2" },
+        { "uri": "environmentDiffuse.ktx2" },
+        { "uri": "brdfLUT.png" }
     ]
 }
 ```
