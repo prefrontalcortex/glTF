@@ -16,7 +16,7 @@ Draft
 
 ## Dependencies
 
-Written against the glTF 2.0 spec, requires `KHR_texture_basisu` extension, interacts with `EXT_texture_bc6h` and `EXT_texture_astc_hdr` extensions.
+Written against the glTF 2.0 spec.
 
 ## Overview
 
@@ -119,15 +119,7 @@ finalSampledColor = sampledColor * brightnessFactor + brightnessOffset;
 
 ### Normal Quality
 
-Data must be stored as a KTX2 image with Basis Universal supercompression and with alpha channel conforming to RGBD (or RGBE, **TBD**) encoding.
-
-### High Quality (Optional)
-
-Data can be stored as a KTX2 image with BC6H or ASTC HDR payload and linked via `EXT_texture_bc6h` or `EXT_texture_astc_hdr` extensions respectively.
-
-Future extensions may allow additional formats by extending `texture` objects in a similar way.
-
-Assets expected to be publicly released should always provide a normal quality fallback.
+Data must be stored as a KTX2 image.
 
 ### Example with three encodings for the same texture
 
