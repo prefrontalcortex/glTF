@@ -175,4 +175,4 @@ Data must be stored as a KTX2 image.
 
 ## Known Implementations
 
-None.
+[glTF-Sample-Viewer](https://github.com/KhronosGroup/glTF-Sample-Viewer/tree/pbr-next)
