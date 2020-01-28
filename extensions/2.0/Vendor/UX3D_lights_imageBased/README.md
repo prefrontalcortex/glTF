@@ -30,7 +30,7 @@ A conforming implementation of this extension must be able to load the image-bas
 
 ## Defining an Image-Based Light
 
-The `UX3D_lights_imageBased` extension defines a array of image-based lights at the root of the glTF and then each scene can reference one. Each image-based light definition consists of a single cubemap that describes the specular radiance of the scene including a lookup table texture, the l=2 spherical harmonics coefficients or another cubemap for diffuse irradiance, and also rotation, brighness factor, and offset values.
+The `UX3D_lights_imageBased` extension defines a array of image-based lights at the root of the glTF and then each scene can reference one. Each image-based light definition consists of a single cubemap that describes the specular radiance of the scene, the l=2 spherical harmonics coefficients or another cubemap for diffuse irradiance, and also rotation, brighness factor, and offset values.
 
 An example using SH for diffuse irradiance:
 
@@ -43,7 +43,6 @@ An example using SH for diffuse irradiance:
                 "brightnessFactor": 1.0,
                 "brightnessOffset": 0.0,
                 "specularEnvironmentTexture": 0,
-                "specularLookupTexture": 1,
                 "diffuseSphericalHarmonics": [
                     [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
                     [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
@@ -66,8 +65,7 @@ An example using a cubemap for diffuse irradiance:
                 "brightnessFactor": 1.0,
                 "brightnessOffset": 0.0,
                 "specularEnvironmentTexture": 0,
-                "specularLookupTexture": 1,
-                "diffuseEnvironmentTexture": 2
+                "diffuseEnvironmentTexture": 1
             }
         ]
     }
@@ -145,8 +143,7 @@ Data must be stored as a KTX2 image.
                 {
                     "name": "GGX",
                     "specularEnvironmentTexture": 0,
-                    "diffuseEnvironmentTexture": 1,
-                    "specularLookupTexture": 2
+                    "diffuseEnvironmentTexture": 1
                 }
             ]
         }
@@ -159,16 +156,11 @@ Data must be stored as a KTX2 image.
         {
             "name": "Diffuse Environment Texture",
             "source": 1
-        },
-        {
-            "name": "Specular LUT Texture",
-            "source": 2
         }
     ],
     "images": [
         { "uri": "environmentSpecular.ktx2" },
-        { "uri": "environmentDiffuse.ktx2" },
-        { "uri": "brdfLUT.png" }
+        { "uri": "environmentDiffuse.ktx2" }
     ]
 }
 ```
