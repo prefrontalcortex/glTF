@@ -22,7 +22,7 @@ TODO
 
 ## Extending Materials
 
-The PBR sheen materials are defined by adding the `KHR_materials_sheen` extension to any glTF material. 
+The PBR sheen materials are defined by adding the `KHR_materials_sheen` extension to any glTF material.
 For example, the following defines a material like velvet.
 
 ```json
@@ -53,7 +53,7 @@ All implementations should use the same calculations for the BRDF inputs. Implem
 
 The sheen roughness is identical to the material roughness to simplify the configuration. `sheenRoughness = materialRoughness`
 
-If a texture is defined: 
+If a texture is defined:
 * The sheen intensity is computed with : `sheenIntensity = intensityFactor * sample(colorIntensityTexture).a`.
 
 * The sheen color is computed with : `sheenColor = colorFactor * sampleLinear(colorIntensityTexture).rgb`.
@@ -99,8 +99,34 @@ If `sheenFactor = 0`, the sheen layer is disabled and the material is behaving l
 ```
 f = f_emissive + f_diffuse + f_specular
 ```
-  
+
 If textures are not set, the default values of the clearcoat layer textures are used and the values are not inherited from the underlying Metallic-Roughness (or other) material. If one wants to have the same textures, one have to explicitly set the same texture sources.
+
+## IBL support
+
+In order to render sheen IBL, the `UX3D_lights_imageBased` extension should be used and extended so that the `imageBasedLight` object contains another cube map for the specular sheen environment.
+
+### Example
+
+```
+"UX3D_lights_imageBased":
+{
+    "imageBasedLights":
+    [
+        {
+            "specularEnvironmentTexture": 0,
+            "diffuseEnvironmentTexture": 1,
+            "extensions":
+            {
+                "KHR_materials_sheen":
+                {
+                    "specularEnvironmentTexture": 2,
+                }
+            }
+        }
+    ]
+}
+```
 
 ## Appendix
 
