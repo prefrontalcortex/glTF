@@ -1,0 +1,56 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema",
+    "title": "operator",
+    "type": "object",
+    "description": "Operator definition.",
+    "allOf": [ { "$ref": "glTFChildOfRootProperty.schema.json" } ],
+    "properties": {
+        "function": {
+            "default": "VALUE",
+            "anyOf": [
+                {
+                    "const": "VALUE"
+                },
+                {
+                    "const": "IDENTIY"
+                },
+                {
+                    "const": "NOT"
+                },
+                {
+                    "const": "AND"
+                },
+                {
+                    "const": "OR"
+                },
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        "type": {
+            "default": "number",
+            "anyOf": [
+                {
+                    "const": "number"
+                },
+                {
+                    "const": "integer"
+                },
+                {
+                    "const": "boolean"
+                },
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        "name": { },
+        "extensions": { },
+        "extras": { }
+    },
+    "required": [
+        "function",
+        "type"
+    ]
+}
