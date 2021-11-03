@@ -7,6 +7,7 @@
     "properties": {
         "function": {
             "default": "VALUE",
+            "description": "ToDo: Add more operators.",
             "anyOf": [
                 {
                     "const": "VALUE"
@@ -30,6 +31,7 @@
         },
         "type": {
             "default": "number",
+            "description": "Allowed types. Has to be identical with properties insidw values.",
             "anyOf": [
                 {
                     "const": "number"
@@ -45,12 +47,39 @@
                 }
             ]
         },
+        "values": {
+            "type": "array",
+            "description": "The values of this operator.",
+            "items": {
+                "oneOf": [
+                    {
+                        "type": "number"
+                    },
+                    {
+                        "type": "integer"
+                    },
+                    {
+                        "type": "boolean"
+                    }
+                ]
+            },
+            "minItems": 1
+        },
+        "inputOperators": {
+            "type": "array",
+            "description": "The indices of this operator's input operators. If not present, this operator is a jsut container for values.",
+            "items": {
+                "$ref": "glTFid.schema.json"
+            },
+            "minItems": 1
+        },
         "name": { },
         "extensions": { },
         "extras": { }
     },
     "required": [
         "function",
-        "type"
+        "type",
+        "values"
     ]
 }
