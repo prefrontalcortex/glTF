@@ -148,6 +148,11 @@ The following extensions have been created before KHR_animation_pointer and are 
 #### [KHR_materials_unlit](https://github.com/KhronosGroup/glTF/tree/main/extensions/2.0/Khronos/KHR_materials_unlit)
 ❌ No animatable properties.
 
+#### [KHR_materials_emissive_strength](https://github.com/KhronosGroup/glTF/tree/main/extensions/2.0/Khronos/KHR_materials_emissive_strength)
+| Property | Animatable |
+|:--------|:----------|
+| `emissiveStrength` | ✅ |
+
 #### [KHR_materials_variants](https://github.com/KhronosGroup/glTF/tree/main/extensions/2.0/Khronos/KHR_materials_variants)
 ❌ No animatable properties.
 
