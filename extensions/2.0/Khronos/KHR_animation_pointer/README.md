@@ -54,9 +54,9 @@ The calculated values can be out of range of the minimum and maximum value, howe
 
 It is not allowed to animate a glTFid property, as it does change the structure of the glTF in general.
 
-### Valid target templates
+### Valid `pointer` values
 
-|`path`                                                |Accessor Type|Component Type(s)  |Description                                                   |
+|`pointer`                                                |Accessor Type|Component Type(s)  |Description                                                   |
 |------------------------------------------------------|-------------|-------------------|--------------------------------------------------------------|
 |`"/nodes/{}/matrix"`                                  |`"SCALAR"`   |`5126`&nbsp;(FLOAT)|Matrix elements                                               |
 |`"/nodes/{}/rotation"`                                |`"VEC4"`     |`5126`&nbsp;(FLOAT)<br>`5120`&nbsp;(BYTE)&nbsp;normalized<br>`5121`&nbsp;(UNSIGNED_BYTE)&nbsp;normalized<br>`5122`&nbsp;(SHORT)&nbsp;normalized<br>`5123`&nbsp;(UNSIGNED_SHORT)&nbsp;normalized|XYZW rotation quaternion|
@@ -178,7 +178,7 @@ The following extensions have been created before KHR_animation_pointer and are 
 
 ### Example target templates for extensions
 
-|`path`                                                |Accessor Type|Component Type(s)  |Description                                                   |
+|`pointer`                                                |Accessor Type|Component Type(s)  |Description                                                   |
 |------------------------------------------------------|-------------|-------------------|--------------------------------------------------------------|
 |`"/materials/{}/pbrMetallicRoughness/baseColorTexture/extensions/KHR_texture_transform/offset"`                                  |`"VEC2"`   |`5126`&nbsp;(FLOAT)|XY offset vector |
 |`"/extensions/KHR_lights_punctual/lights/{}/intensity"`                                  |`"SCALAR"`   |`5126`&nbsp;(FLOAT) | Light intensity |
